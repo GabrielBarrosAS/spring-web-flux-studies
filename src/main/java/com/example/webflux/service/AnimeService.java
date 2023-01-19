@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
+import java.time.Duration;
 
 @RequiredArgsConstructor
 @Service
 public class AnimeService {
 
     private final AnimeRepositoty animeRepositoty;
+
+    private static String SOURCE = "Project spring webflux 1";
 
     public Flux<Anime> findAll(){
         return animeRepositoty.findAll();
@@ -37,5 +42,12 @@ public class AnimeService {
                 .map(animeFound -> anime.withId(animeFound.getId()))
                 .flatMap(animeRepositoty::save)
                 .thenEmpty(Mono.empty());
+    }
+
+    public Flux<Tuple2<Long, Anime>> findAllCreatedByThisSource(){
+        Flux<Anime> animesBySource = animeRepositoty.findBySource(SOURCE);
+        long time = 1;
+        Flux<Long> interval = Flux.interval(Duration.ofSeconds(time));
+        return Flux.zip(interval, animesBySource);
     }
 }

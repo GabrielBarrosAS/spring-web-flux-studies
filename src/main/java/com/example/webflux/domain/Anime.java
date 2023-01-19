@@ -19,4 +19,6 @@ public class Anime {
     @NotEmpty(message="The name of this anime cannot be empty")
     @NotNull(message="The name of this anime cannot be null")
     private String name;
+
+    private String source = "Project spring webflux 1";
 }
