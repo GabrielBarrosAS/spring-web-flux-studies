@@ -3,6 +3,7 @@ package com.example.webflux.service;
 import com.example.webflux.domain.Anime;
 import com.example.webflux.repository.AnimeRepositoty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,7 +19,8 @@ public class AnimeService {
 
     private final AnimeRepositoty animeRepositoty;
 
-    private static String SOURCE = "Project spring webflux 1";
+    @Value("${application.specifications.query_param}")
+    private String SOURCE;
 
     public Flux<Anime> findAll(){
         return animeRepositoty.findAll();
@@ -34,6 +36,7 @@ public class AnimeService {
     }
 
     public Mono<Anime> save(Anime anime) {
+        anime.setSource(SOURCE);
         return animeRepositoty.save(anime);
     }
 

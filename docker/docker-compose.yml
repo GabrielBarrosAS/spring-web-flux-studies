@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+  postgresql:
+    container_name: postgresql
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - webflux_data:/var/lib/postgresql/data
+
+  webflux_service_one:
+    container_name: webflux_service_one
+    build:
+      context: ../
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
+    environment:
+      - SPRING_R2DBC_URL=r2dbc:postgresql://postgresql:5432/postgres?schema=anime
+      - SPRING_R2DBC_USERNAME=root
+      - SPRING_R2DBC_PASSWORD=root
+      - APPLICATION_SPECIFICATIONS_QUERY_PARAM=Project_spring_webflux_1
+
+  webflux_service_two:
+    container_name: webflux_service_two
+    build:
+      context: ../
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgresql
+    environment:
+      - SPRING_R2DBC_URL=r2dbc:postgresql://postgresql:5432/postgres?schema=anime
+      - SPRING_R2DBC_USERNAME=root
+      - SPRING_R2DBC_PASSWORD=root
+      - APPLICATION_SPECIFICATIONS_QUERY_PARAM=Project_spring_webflux_2
+volumes:
+  webflux_data:

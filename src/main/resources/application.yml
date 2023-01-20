@@ -9,3 +9,6 @@ logging:
       springframework:
         data:
           r2dbc: DEBUG
+application:
+  specifications:
+    query_param: ${APPLICATION_SPECIFICATIONS_QUERY_PARAM:NULL}
