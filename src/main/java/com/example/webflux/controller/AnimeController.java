@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import javax.validation.Valid;
 
@@ -25,7 +24,7 @@ public class AnimeController {
     }
 
     @GetMapping("/testEfect")
-    public Flux<Tuple2<Long, Anime>> findAllCreatedByThisMicroservice(){
+    public Flux<Anime> findAllCreatedByThisMicroservice(){
         return animeService.findAllCreatedByThisSource();
     }
 

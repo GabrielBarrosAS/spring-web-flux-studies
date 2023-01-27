@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 
@@ -47,10 +46,9 @@ public class AnimeService {
                 .thenEmpty(Mono.empty());
     }
 
-    public Flux<Tuple2<Long, Anime>> findAllCreatedByThisSource(){
+    public Flux<Anime> findAllCreatedByThisSource(){
         Flux<Anime> animesBySource = animeRepositoty.findBySource(SOURCE);
-        long time = 1;
-        Flux<Long> interval = Flux.interval(Duration.ofSeconds(time));
-        return Flux.zip(interval, animesBySource);
+
+        return  animesBySource.delayElements(Duration.ofSeconds(1));
     }
 }
